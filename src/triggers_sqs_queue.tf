@@ -20,7 +20,7 @@ module "sqs_queue" {
   for_each = { for k, v in var.sqs_notifications : k => v if v.sqs_component != null }
 
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.5.0"
+  version = "1.8.0"
 
   component = each.value.sqs_component.component
 
