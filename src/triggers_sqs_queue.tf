@@ -35,7 +35,7 @@ module "sqs_iam_policy" {
   for_each = var.sqs_notifications
 
   source  = "cloudposse/iam-policy/aws"
-  version = "1.0.1"
+  version = "2.0.2"
 
   iam_policy_enabled = true
   iam_policy = {
