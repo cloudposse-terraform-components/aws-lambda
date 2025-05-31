@@ -165,10 +165,10 @@ cloudwatch_event_rules:
 | <a name="module_iam_policy"></a> [iam\_policy](#module\_iam\_policy) | cloudposse/iam-policy/aws | 1.0.1 |
 | <a name="module_iam_roles"></a> [iam\_roles](#module\_iam\_roles) | ../account-map/modules/iam-roles | n/a |
 | <a name="module_lambda"></a> [lambda](#module\_lambda) | cloudposse/lambda-function/aws | 0.6.1 |
-| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_s3_bucket_notifications_component"></a> [s3\_bucket\_notifications\_component](#module\_s3\_bucket\_notifications\_component) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_s3_bucket_notifications_component"></a> [s3\_bucket\_notifications\_component](#module\_s3\_bucket\_notifications\_component) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_sqs_iam_policy"></a> [sqs\_iam\_policy](#module\_sqs\_iam\_policy) | cloudposse/iam-policy/aws | 1.0.1 |
-| <a name="module_sqs_queue"></a> [sqs\_queue](#module\_sqs\_queue) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_sqs_queue"></a> [sqs\_queue](#module\_sqs\_queue) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 
 ## Resources
