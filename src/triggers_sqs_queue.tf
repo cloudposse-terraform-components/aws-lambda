@@ -38,7 +38,7 @@ module "sqs_iam_policy" {
   version = "2.0.2"
 
   iam_policy_enabled = true
-  iam_policy = {
+  iam_policy = [{
     version = "2012-10-17"
     statements = [
       {
@@ -47,7 +47,7 @@ module "sqs_iam_policy" {
         resources = each.value.sqs_arn != null ? [each.value.sqs_arn.sqs_arn] : [module.sqs_queue[each.key].outputs.sqs_queue.queue_arn]
       },
     ]
-  }
+  }]
   context = module.this.context
 }
 
