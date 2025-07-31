@@ -17,6 +17,10 @@ locals {
 
   cicd_s3_key_format = var.cicd_s3_key_format != null ? var.cicd_s3_key_format : "stage/${module.this.stage}/lambda/${local.function_name}/%s"
   s3_key             = var.s3_key != null ? var.s3_key : (var.image_uri != null ? null : format(local.cicd_s3_key_format, coalesce(one(data.aws_ssm_parameter.cicd_ssm_param[*].value), "example")))
+
+  # If cicd_ssm_param_name is set, use the value from the SSM parameter to format the image_uri
+  # This is useful when you want to deploy a lambda whos tag is stored in a SSM parameter
+  image_uri = (var.cicd_ssm_param_name != null && var.image_uri != null && strcontains(var.image_uri, "%s")) ? format(var.image_uri, one(data.aws_ssm_parameter.cicd_ssm_param[*].value)) : var.image_uri
 }
 
 data "aws_ssm_parameter" "cicd_ssm_param" {
@@ -70,7 +74,7 @@ module "lambda" {
   description        = var.description
   handler            = var.handler
   lambda_environment = var.lambda_environment
-  image_uri          = var.image_uri
+  image_uri          = local.image_uri
   image_config       = var.image_config
 
   filename          = var.zip.enabled ? coalesce(data.archive_file.lambdazip[0].output_path, var.filename) : var.filename
