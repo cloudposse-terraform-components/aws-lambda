@@ -32,7 +32,7 @@ data "aws_ssm_parameter" "cicd_ssm_param" {
 module "iam_policy" {
   count   = local.iam_policy_enabled ? 1 : 0
   source  = "cloudposse/iam-policy/aws"
-  version = "1.0.1"
+  version = "2.0.2"
 
   iam_policy_enabled          = true
   iam_policy                  = var.iam_policy

@@ -263,7 +263,7 @@ variable "policy_json" {
 }
 
 variable "iam_policy" {
-  type = object({
+  type = list(object({
     policy_id = optional(string, null)
     version   = optional(string, null)
     statements = list(object({
@@ -287,9 +287,14 @@ variable "iam_policy" {
         identifiers = list(string)
       })), [])
     }))
-  })
-  description = "IAM policy to attach to the Lambda role, specified as a Terraform object. This can be used with or instead of `var.policy_json`."
-  default     = null
+  }))
+  description = <<-EOT
+    IAM policy as list of Terraform objects, compatible with Terraform `aws_iam_policy_document` data source
+    except that `source_policy_documents` and `override_policy_documents` are not included.
+    Use inputs `iam_source_policy_documents` and `iam_override_policy_documents` for that.
+    EOT
+  default     = []
+  nullable    = false
 }
 
 variable "zip" {
