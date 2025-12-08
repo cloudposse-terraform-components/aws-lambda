@@ -65,9 +65,13 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
   function_name    = module.lambda.function_name
   batch_size       = each.value.batch_size == null ? 1 : each.value.batch_size
 
-  scaling_config {
-    maximum_concurrency = each.value.maximum_concurrency
+  dynamic "scaling_config" {
+    for_each = each.value.maximum_concurrency != null ? [1] : []
+    content {
+      maximum_concurrency = each.value.maximum_concurrency
+    }
   }
+
   dynamic "destination_config" {
     for_each = { for k, v in each.value : k => v if k == "on_failure_arn" && v != null }
     content {
