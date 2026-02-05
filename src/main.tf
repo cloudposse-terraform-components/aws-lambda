@@ -17,10 +17,12 @@ locals {
 
   cicd_s3_key_format = var.cicd_s3_key_format != null ? var.cicd_s3_key_format : "stage/${module.this.stage}/lambda/${local.function_name}/%s"
   # Only set s3_key when both bucket and key are set or not required for Image type
-  s3_key = (
-    (var.s3_key != null && local.s3_bucket_name != null) ? var.s3_key :
-    (var.image_uri != null ? null : (local.s3_bucket_name != null ? format(local.cicd_s3_key_format, coalesce(one(data.aws_ssm_parameter.cicd_ssm_param[*].value), "example")) : null))
+  s3_key = local.s3_bucket_name == null ? null : (
+    var.s3_key != null ? var.s3_key : (
+      var.image_uri != null ? null : format(local.cicd_s3_key_format, coalesce(one(data.aws_ssm_parameter.cicd_ssm_param[*].value), "example"))
+    )
   )
+
 
   # If cicd_ssm_param_name is set, use the value from the SSM parameter to format the image_uri
   # This is useful when you want to deploy a lambda whos tag is stored in a SSM parameter
