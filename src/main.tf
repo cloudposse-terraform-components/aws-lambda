@@ -5,7 +5,10 @@ locals {
 
   s3_bucket_name = var.s3_bucket_name != null ? var.s3_bucket_name : one(module.s3_bucket[*].outputs.bucket_id)
 
-  function_name = coalesce(var.function_name, module.this.id)
+  function_name        = local.enabled ? coalesce(var.function_name, module.this.id) : ""
+  function_url_enabled = local.enabled && var.function_url_enabled
+
+  cloudwatch_event_rules = local.enabled ? var.cloudwatch_event_rules : {}
 
   var_policy_json = local.var_iam_policy_enabled ? [var.policy_json] : []
 
@@ -83,7 +86,7 @@ module "lambda" {
   image_uri          = local.image_uri
   image_config       = var.image_config
 
-  filename          = var.zip.enabled ? coalesce(data.archive_file.lambdazip[0].output_path, var.filename) : var.filename
+  filename          = local.enabled && var.zip.enabled ? coalesce(data.archive_file.lambdazip[0].output_path, var.filename) : var.filename
   s3_bucket         = local.s3_bucket_name
   s3_key            = local.s3_key
   s3_object_version = var.s3_object_version
@@ -114,7 +117,7 @@ module "lambda" {
 }
 
 resource "aws_lambda_function_url" "lambda_url" {
-  count              = var.function_url_enabled ? 1 : 0
+  count              = local.function_url_enabled ? 1 : 0
   function_name      = module.lambda.function_name
   authorization_type = "AWS_IAM"
 
