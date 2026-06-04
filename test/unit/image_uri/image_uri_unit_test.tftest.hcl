@@ -28,6 +28,25 @@ run "zip_deploy_with_ssm_param_does_not_error" {
   }
 }
 
+# When disabled, the SSM data source has count 0 (one([]) == null). Even with a
+# templated image_uri and cicd_ssm_param_name set, the format branch must not be
+# selected, otherwise format(image_uri, null) fails at plan time.
+run "disabled_with_ssm_param_and_template_does_not_error" {
+  command = plan
+
+  variables {
+    enabled             = false
+    image_uri           = "123456789012.dkr.ecr.us-east-1.amazonaws.com/app:%s"
+    cicd_ssm_param_name = "/cicd/lambda/sha"
+    ssm_param_value     = null
+  }
+
+  assert {
+    condition     = output.image_uri == "123456789012.dkr.ecr.us-east-1.amazonaws.com/app:%s"
+    error_message = "When disabled, image_uri must pass through unchanged without formatting"
+  }
+}
+
 # A templated image_uri with a cicd_ssm_param_name gets the SSM value formatted in.
 run "templated_image_uri_is_formatted_with_ssm_value" {
   command = plan
