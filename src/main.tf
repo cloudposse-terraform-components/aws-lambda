@@ -29,7 +29,7 @@ locals {
 
   # If cicd_ssm_param_name is set, use the value from the SSM parameter to format the image_uri
   # This is useful when you want to deploy a lambda whos tag is stored in a SSM parameter
-  image_uri = (var.cicd_ssm_param_name != null && var.image_uri != null && strcontains(var.image_uri, "%s")) ? format(var.image_uri, one(data.aws_ssm_parameter.cicd_ssm_param[*].value)) : var.image_uri
+  image_uri = (local.enabled && var.cicd_ssm_param_name != null && var.image_uri != null && strcontains(var.image_uri == null ? "" : var.image_uri, "%s")) ? format(var.image_uri, one(data.aws_ssm_parameter.cicd_ssm_param[*].value)) : var.image_uri
 }
 
 data "aws_ssm_parameter" "cicd_ssm_param" {
